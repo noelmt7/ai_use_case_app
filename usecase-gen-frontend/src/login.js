@@ -6,12 +6,14 @@ const Login = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isRegistering, setIsRegistering] = useState(false); // Track whether the user is in the registration mode
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8000/api/login/', {
+      const apiEndpoint = isRegistering ? 'http://localhost:8000/api/register/' : 'http://localhost:8000/api/login/';
+      const response = await axios.post(apiEndpoint, {
         username,
         password
       });
@@ -35,7 +37,7 @@ const Login = ({ onLoginSuccess }) => {
   return (
     <div className="login-container">
       <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h2>{isRegistering ? 'Register' : 'Login'}</h2>
 
         <div className="input-group">
           <label htmlFor="username">Username</label>
@@ -59,8 +61,19 @@ const Login = ({ onLoginSuccess }) => {
           />
         </div>
 
-        <button type="submit">Login</button>
+        <button type="submit">{isRegistering ? 'Register' : 'Login'}</button>
+
         {error && <p className="error-message">{error}</p>}
+
+        {/* Toggle between login and registration */}
+        <div className="toggle-register">
+          <p>
+            {isRegistering ? 'Already have an account? ' : "Don't have an account?"}
+            <span onClick={() => setIsRegistering(!isRegistering)} className="toggle-link">
+              {isRegistering ? 'Login' : 'Register'}
+            </span>
+          </p>
+        </div>
       </form>
     </div>
   );

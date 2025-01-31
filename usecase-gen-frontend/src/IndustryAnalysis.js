@@ -28,10 +28,11 @@ const IndustryAnalysis = () => {
     };
 
     return (
-        <div className="container mt-5">
-            <div className="card shadow">
+        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: ".5vh", backgroundColor: "#f0f0f0" }}>
+            {/* Main Content */}
+            <div className="card shadow" style={{ width: "100%", maxWidth: "600px" }}>
                 <div className="card-body">
-                    <h1 className="card-title">Industry Analysis</h1>
+                    <h1 className="card-title text-center mb-4">Industry Analysis</h1>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="industry">Industry</label>
@@ -52,7 +53,7 @@ const IndustryAnalysis = () => {
                     {summary && (
                         <div className="mt-4">
                             <h2 className="h6 font-weight-bold">Summary</h2>
-                            <div className="bg-light p-3 rounded">
+                            <div className="bg-light p-2 rounded">
                                 {summary.split("\n").map((line, index) => (
                                     <p key={index} style={{ fontSize: "0.85rem", marginBottom: "0.5rem" }}>
                                         {line}

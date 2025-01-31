@@ -7,13 +7,12 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
-from django.shortcuts import render
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.hashers import make_password
 
+# Login view for handling user authentication
 class LoginView(APIView):
     def post(self, request):
         username = request.data.get('username')
@@ -29,9 +28,10 @@ class LoginView(APIView):
                 'access': str(refresh.access_token),
             })
         else:
-            return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"detail": "Invalid credentials"}, status=401)
 
 
+# Enhanced research agent for gathering industry-related data
 class EnhancedResearchAgent:
     def __init__(self):
         self.api_key = '5402a7bfd62fcf4fa0b44ea525ce9b7093938358b0c62f86757ee96f82b6815e'  # Replace with your actual SerpAPI key
@@ -96,7 +96,7 @@ class EnhancedResearchAgent:
         line_height = 14
 
         # Register a standard font
-        pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
+        pdf.setFont('Helvetica', 11)
 
         for line in content.split('\n'):
             clean_line = line.replace('#', '').replace('*', '').strip()
@@ -119,6 +119,7 @@ class EnhancedResearchAgent:
         return buffer
 
 
+# Industry analysis view to gather and return research data
 class IndustryAnalysisView(APIView):
     def get(self, request):
         # Retrieve the industry query parameter
@@ -140,6 +141,8 @@ class IndustryAnalysisView(APIView):
 
         return Response({"summary": summary})
 
+
+# PDF download view for generating and downloading the PDF
 class DownloadPDFView(APIView):
     def post(self, request):
         summary = request.data.get('summary', '')
@@ -148,3 +151,24 @@ class DownloadPDFView(APIView):
 
         pdf_buffer = EnhancedResearchAgent.generate_pdf(summary)
         return FileResponse(pdf_buffer, as_attachment=True, filename='summary.pdf')
+
+
+# Register view for handling user registration
+class RegisterView(APIView):
+    def post(self, request):
+        username = request.data.get('username', '')
+        password = request.data.get('password', '')
+
+        if User.objects.filter(username=username).exists():
+            return Response({"error": "Username already exists"}, status=400)
+
+        user = User.objects.create(username=username, password=make_password(password))
+        user.save()
+
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+
+        return Response({
+            "access": access_token,
+            "refresh": str(refresh)
+        })

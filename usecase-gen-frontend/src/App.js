@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import IndustryAnalysis from './IndustryAnalysis';
-import Login from './Login'; // Import the Login component
+import Login from './login';  // Assuming this is your login page
+import TaskList from './tasklist';  // The component where tasks will be displayed
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isIndustryAnalysis, setIsIndustryAnalysis] = useState(false); // Track which component to show
 
   // Check if the user is logged in on initial load
   useEffect(() => {
@@ -20,12 +22,24 @@ function App() {
     localStorage.setItem('isLoggedIn', 'true'); // Store login state in localStorage
   };
 
+  // Toggle between Industry Analysis and Task List
+  const handleSwitchComponent = () => {
+    setIsIndustryAnalysis(!isIndustryAnalysis);
+  };
+
   return (
     <div className="App">
       {!isLoggedIn ? (
         <Login onLoginSuccess={handleLoginSuccess} />
       ) : (
-        <IndustryAnalysis />
+        <>
+          {/* Show the component based on the state */}
+          {isIndustryAnalysis ? <IndustryAnalysis /> : <TaskList />}
+          {/* Button to toggle between TaskList and IndustryAnalysis */}
+          <button onClick={handleSwitchComponent}>
+            {isIndustryAnalysis ? 'Go to Task List' : 'Go to Industry Analysis'}
+          </button>
+        </>
       )}
     </div>
   );

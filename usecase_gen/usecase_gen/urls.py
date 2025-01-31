@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from myapp.views import IndustryAnalysisView, DownloadPDFView,LoginView
+from myapp.views import IndustryAnalysisView, DownloadPDFView,LoginView,RegisterView
 from django.http import HttpResponse
 
 def home(request):
@@ -28,4 +28,5 @@ urlpatterns = [
     path('api/industry-analysis/', IndustryAnalysisView.as_view(), name = 'industry-analysis'),
     path('api/download-pdf', DownloadPDFView.as_view(), name = 'download-pdf'),
     path('api/login/', LoginView.as_view(), name = 'login'),
+    path('api/register/', RegisterView.as_view(), name = 'register'),
 ]

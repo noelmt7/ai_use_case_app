@@ -1,3 +1,4 @@
+/* General Body Styles */
 body {
   margin: 0;
   padding: 0;
@@ -5,42 +6,52 @@ body {
   align-items: center;
   justify-content: center;
   background-color: burlywood;
-  background-image: url('D:\Final_Project\usecase-gen-frontend\bg.jpg');
-  background-size:auto;
+  background-image: url('D:/Final_Project/usecase-gen-frontend/bg.jpg');
+  background-size: cover; /* Adjusted to cover entire screen */
   background-position: center;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh; /* Ensures the body takes up full screen height */
+  flex-direction: column;
 }
 
-.bg-light {
-  background-color: #f9f9f9 !important;
-  border-left: 5px solid #007bff; /* Adds a blue line on the left */
+/* Styling for the Navbar */
+.navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
+/* Card Styles */
 .card {
   background-color: white;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 500px;
-  height: 500px;
+  width: 100%; /* Full width on smaller screens */
+  max-width: 500px; /* Limit width on larger screens */
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin-top: 80px; /* Space below fixed navbar */
 }
 
 .card h1 {
   font-size: 24px;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .card p {
   font-size: 18px;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .card button {
@@ -51,12 +62,14 @@ body {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s;
+  width: 100%; /* Full width for the button */
 }
 
 .card button:hover {
   background-color: #0056b3;
 }
 
+/* Label Styling */
 label {
   font-size: 0.9rem;
   font-weight: 500;
@@ -65,8 +78,9 @@ label {
   margin-bottom: 5px;
 }
 
+/* Input Field Styling */
 input {
-  width: 100px;
+  width: 100%; /* Full width for the input */
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -81,6 +95,7 @@ input:focus {
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
+/* Button Styling */
 button {
   padding: 10px 20px;
   background-color: #007bff;
@@ -91,12 +106,14 @@ button {
   cursor: pointer;
   margin-top: 1rem;
   transition: background-color 0.2s;
+  width: 100%;
 }
 
 button:hover {
   background-color: #0056b3;
 }
 
+/* Error Message Styling */
 .error {
   color: red;
   font-size: 0.9rem;
@@ -104,6 +121,7 @@ button:hover {
   text-align: center;
 }
 
+/* Summary Styling */
 .summary {
   font-size: 1.2rem;
   font-weight: 600;
@@ -125,9 +143,24 @@ button:hover {
   font-size: 0.9rem;
   color: #4a5568;
   white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
+/* Code Block Styling */
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* For Larger Screens */
+@media (min-width: 768px) {
+  .card {
+    width: 60%;
+  }
+}
+
+/* For Smaller Screens */
+@media (max-width: 576px) {
+  .card {
+    width: 90%;
+  }
 }
