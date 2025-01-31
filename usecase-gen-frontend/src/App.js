@@ -3,6 +3,7 @@ import './App.css';
 import IndustryAnalysis from './IndustryAnalysis';
 import Login from './login';  // Assuming this is your login page
 import TaskList from './tasklist';  // The component where tasks will be displayed
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,6 +23,12 @@ function App() {
     localStorage.setItem('isLoggedIn', 'true'); // Store login state in localStorage
   };
 
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn'); // Remove login state from localStorage
+    setIsLoggedIn(false);
+  };
+
   // Toggle between Industry Analysis and Task List
   const handleSwitchComponent = () => {
     setIsIndustryAnalysis(!isIndustryAnalysis);
@@ -29,18 +36,32 @@ function App() {
 
   return (
     <div className="App">
-      {!isLoggedIn ? (
-        <Login onLoginSuccess={handleLoginSuccess} />
-      ) : (
-        <>
-          {/* Show the component based on the state */}
-          {isIndustryAnalysis ? <IndustryAnalysis /> : <TaskList />}
-          {/* Button to toggle between TaskList and IndustryAnalysis */}
-          <button onClick={handleSwitchComponent}>
-            {isIndustryAnalysis ? 'Go to Task List' : 'Go to Industry Analysis'}
-          </button>
-        </>
-      )}
+      <Router>
+        <Routes>
+          {/* Handle routing based on login status */}
+          {!isLoggedIn ? (
+            <Route path="/" element={<Login onLoginSuccess={handleLoginSuccess} />} />
+          ) : (
+            <Route path="/" element={
+              <>
+                {/* Show the component based on the state */}
+                {isIndustryAnalysis ? <IndustryAnalysis /> : <TaskList />}
+                {/* Button to toggle between TaskList and IndustryAnalysis */}
+                <button onClick={handleSwitchComponent}>
+                  {isIndustryAnalysis ? 'Go to Task List' : 'Go to Industry Analysis'}
+                </button>
+                {/* Logout button */}
+                <button onClick={handleLogout} className="btn btn-danger mt-3">
+                  Logout
+                </button>
+              </>
+            } />
+          )}
+
+          {/* Redirect if the user is logged out */}
+          <Route path="/login" element={<Navigate to="/" />} />
+        </Routes>
+      </Router>
     </div>
   );
 }

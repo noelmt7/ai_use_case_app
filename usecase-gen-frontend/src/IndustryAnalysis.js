@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const IndustryAnalysis = () => {
     const [industry, setIndustry] = useState("");
     const [summary, setSummary] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const navigate = useNavigate(); // Initialize the navigate function
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,6 +27,13 @@ const IndustryAnalysis = () => {
         } finally {
             setLoading(false);
         }
+    };
+
+    // Logout handler to clear session or token and navigate back to login page
+    const handleLogout = () => {
+        // Clear any user data or token (example: localStorage.clear())
+        localStorage.removeItem("userToken");  // You can modify this if you're storing auth data differently
+        navigate('/login');  // Use navigate to go to the login page
     };
 
     return (
@@ -62,6 +71,10 @@ const IndustryAnalysis = () => {
                             </div>
                         </div>
                     )}
+                    {/* Logout Button */}
+                    <button onClick={handleLogout} className="btn btn-danger mt-4 w-100">
+                        Logout
+                    </button>
                 </div>
             </div>
         </div>

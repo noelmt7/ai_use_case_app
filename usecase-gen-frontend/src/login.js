@@ -12,27 +12,27 @@ const Login = ({ onLoginSuccess }) => {
     event.preventDefault();
 
     try {
-      const apiEndpoint = isRegistering ? 'http://localhost:8000/api/register/' : 'http://localhost:8000/api/login/';
-      const response = await axios.post(apiEndpoint, {
-        username,
-        password
-      });
+        const apiEndpoint = isRegistering ? 'http://localhost:8000/api/register/' : 'http://localhost:8000/api/login/';
+        const response = await axios.post(apiEndpoint, {
+            username,
+            password
+        });
 
-      // On success, store the JWT token
-      if (response.data.access) {
-        localStorage.setItem('access_token', response.data.access);
-        localStorage.setItem('refresh_token', response.data.refresh);
+        // On success, store the JWT token
+        if (response.data.access) {
+            localStorage.setItem('access_token', response.data.access);
+            localStorage.setItem('refresh_token', response.data.refresh);
 
-        // Call the parent callback to update login state
-        onLoginSuccess();
-      } else {
-        setError('Invalid login credentials');
-      }
+            // Call the parent callback to update login state and redirect to Industry Analysis page
+            onLoginSuccess();
+        } else {
+            setError('Invalid login credentials');
+        }
     } catch (error) {
-      setError('An error occurred, please try again later.');
-      console.error(error);
+        setError('An error occurred, please try again later.');
+        console.error(error);
     }
-  };
+};
 
   return (
     <div className="login-container">
